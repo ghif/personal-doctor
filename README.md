@@ -5,7 +5,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11+-blueviolet)
 ![Frameworks](https://img.shields.io/badge/Frameworks-FastAPI%20%7C%20Streamlit-green)
 
-A local, privacy-preserving multimodal AI assistant for personal health education and triage support. This tool runs entirely on your local machine, ensuring that your data remains private.
+A local, privacy-preserving multimodal AI assistant for personal health education and triage support using [MedGemma](https://deepmind.google/models/gemma/medgemma/). This tool runs entirely on your local machine, ensuring that your data remains private.
 
 ## Core Principles
 
