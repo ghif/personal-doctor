@@ -31,7 +31,7 @@ The assistant supports multiple modes of interaction for discussing symptoms and
 
 ## Development Process
 
-This project is built using a spec-driven development process facilitated by the `speckit` tool. All features are formally specified, planned, and tasked before implementation.
+This project is built using a spec-driven development process facilitated by the [`speckit`](https://github.com/github/spec-kit) and [`gemini-cli`](https://github.com/google-gemini/gemini-cli) tools. All features are formally specified, planned, and tasked before implementation.
 
 ## Setup
 
