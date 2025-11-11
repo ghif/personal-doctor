@@ -1,6 +1,6 @@
 # Feature Specification: Image Upload Button
 
-**Feature Branch**: `001-image-upload-button`  
+**Feature Branch**: `002-image-upload-button`  
 **Created**: 2025-11-11
 **Status**: Draft  
 **Input**: User description: "apply the image upload mechanism conducted through a single button click in `frontend` application in the same position as the input textbox"

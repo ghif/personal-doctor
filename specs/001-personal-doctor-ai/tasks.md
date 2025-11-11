@@ -31,6 +31,7 @@
 - [X] T009 [US1] Implement the core logic in the `backend/src/services/` to process a text query.
 - [X] T010 [US1] In the service, use the `ollama` Python library to interact with the `amsaravi/medgemma-4b-it:q6` model. Refer to `research.md`.
 - [X] T011 [US1] Integrate the Google ADK for basic conversational agent logic within the service. Refer to `research.md`.
+- [ ] T034 [US1] Ensure the service logic incorporates FR-004 (disclaimer) and FR-008 (triage caution).
 - [X] T012 [US1] Set up the main Streamlit application file in `frontend/src/app.py`.
 - [X] T013 [US1] [P] Create a chat input component in `frontend/src/components/`.
 - [X] T014 [US1] [P] Create a message display component in `frontend/src/components/`.
@@ -61,11 +62,15 @@
 - [ ] T023 [US3] Implement the voice input functionality in the frontend, adding a microphone button to the UI.
 - [ ] T024 [US3] Research and choose a library for browser-based text-to-speech (e.g., Web Speech API).
 - [ ] T025 [US3] Implement the text-to-speech functionality in the frontend to read out the assistant's response.
+- [ ] T033 [US3] Implement a UI toggle to enable/disable text-to-speech functionality.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [X] T026 [P] Implement unit tests for the backend in the `backend/tests/` directory.
 - [X] T027 [P] Implement integration tests in the `backend/tests/integration/` directory.
+- [ ] T030 [P] Implement performance tests to measure query response times against SC-001.
+- [ ] T031 [P] Implement memory footprint monitoring to verify compliance with SC-005.
+- [ ] T032 [P] Develop a test suite for speech-to-text accuracy (WER) against SC-003.
 - [X] T028 [P] Update the `README.md` with final setup and usage instructions.
 - [X] T029 Review and refine the code based on the principles in `constitution.md`.
 

@@ -1,7 +1,7 @@
-# Implementation Plan: 001-image-upload-button
+# Implementation Plan: 002-image-upload-button
 
 **Feature Spec**: [spec.md](./spec.md)  
-**Branch**: `001-image-upload-button`  
+**Branch**: `002-image-upload-button`  
 **Created**: 2025-11-11
 
 ## Technical Context
