@@ -1,2 +1,5 @@
 streamlit
 requests
+streamlit-webrtc
+scipy
+openai-whisper

@@ -22,6 +22,7 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 Python 3.11+: Follow standard conventions
 
 ## Recent Changes
+- 003-voice-to-text-input: Added Python 3.11+ + Streamlit
 
 - 001-personal-doctor-ai: Added Python 3.11+ + Streamlit, FastAPI, Google ADK, Ollama
 

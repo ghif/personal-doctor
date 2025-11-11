@@ -53,6 +53,10 @@ This project is built using a spec-driven development process facilitated by the
     ```bash
     ollama run amsaravi/medgemma-4b-it:q6
     ```
+-   **ffmpeg**: Required for audio processing by Whisper.
+    -   **macOS (using Homebrew)**: `brew install ffmpeg`
+    -   **Linux (using apt)**: `sudo apt update && sudo apt install ffmpeg`
+    -   **Windows**: Download from the official ffmpeg website.
 
 ### Installation
 

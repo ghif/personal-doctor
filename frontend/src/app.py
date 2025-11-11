@@ -1,6 +1,7 @@
 import streamlit as st
 from services.api_service import query_backend
 from src import config
+from src.components.voice_recorder import voice_recorder
 
 st.title(config.APP_TITLE)
 
@@ -9,6 +10,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "uploaded_file" not in st.session_state:
     st.session_state.uploaded_file = None
+if "transcribed_text" not in st.session_state:
+    st.session_state.transcribed_text = ""
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
@@ -29,8 +32,18 @@ with st.container():
         st.info(f"📷 Image ready: {st.session_state.uploaded_file.name}")
         st.image(st.session_state.uploaded_file, caption="Uploaded Image.", use_column_width=True)
 
+    # Voice recorder
+    transcribed_text = voice_recorder()
+    if transcribed_text:
+        st.session_state.transcribed_text = transcribed_text
+
 # Chat input
-if prompt := st.chat_input("What are your symptoms?"):
+prompt = st.chat_input("What are your symptoms?", key="chat_input")
+if st.session_state.get("transcribed_text"):
+    prompt = st.session_state.transcribed_text
+    st.session_state.transcribed_text = "" # Clear after use
+
+if prompt:
     # Display user message
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
