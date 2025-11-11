@@ -20,16 +20,20 @@ async def process_query(user_query: UserQuery):
         # Handle image data if it exists
         if user_query.image_data:
             try:
-                # The image_data is a base64 string, decode it
-                image_bytes = base64.b64decode(user_query.image_data)
-                
-                # Try to open the image to verify it's a valid image
-                Image.open(io.BytesIO(image_bytes))
+                # Check if image_data is a path or base64 string
+                if os.path.exists(user_query.image_data):
+                    temp_image_path = user_query.image_data
+                else:
+                    # The image_data is a base64 string, decode it
+                    image_bytes = base64.b64decode(user_query.image_data)
+                    
+                    # Try to open the image to verify it's a valid image
+                    Image.open(io.BytesIO(image_bytes))
 
-                # Create a temporary file to store the image
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
-                    temp_file.write(image_bytes)
-                    temp_image_path = temp_file.name
+                    # Create a temporary file to store the image
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+                        temp_file.write(image_bytes)
+                        temp_image_path = temp_file.name
                 
                 # Add the image path to the message for Ollama
                 messages[0]['images'] = [temp_image_path]
@@ -52,7 +56,7 @@ async def process_query(user_query: UserQuery):
     except Exception as e:
         yield f"An error occurred while querying the model: {e}"
     finally:
-        # Clean up the temporary file if it was created
-        if temp_image_path and os.path.exists(temp_image_path):
+        # Clean up the temporary file if it was created and it's not the one from the temp_images folder
+        if temp_image_path and os.path.exists(temp_image_path) and "temp_images" not in temp_image_path:
             os.remove(temp_image_path)
 

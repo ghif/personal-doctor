@@ -12,10 +12,7 @@ Plan
 We will develop both frontend and backend services using Python. The frontend will employ the Streamlit framework to provide a clean, user-friendly UI with minimal overhead. The backend will leverage the Agent Development Kit (ADK) from Google in Python, combined with an LLM-serving engine via Ollama and a lightweight REST API layer implemented in FastAPI. The frontend and backend will communicate via REST APIs.
 
 I want you to go through the implementation plan and implementation details, looking for areas that could
-benefit from additional research as ADK and ollama are rapidly changing libraries. For those areas that you identify that
-require further research, I want you to update the research document with additional details about the specific
-versions that we are going to be using in this Taskify application and spawn parallel research tasks to clarify
-any details using research from the web.
+benefit from additional research as ADK and ollama are rapidly changing libraries. 
 
 The MedGemma model used is specifically from Ollama under the name "amsaravi/medgemma-4b-it:q6".
 

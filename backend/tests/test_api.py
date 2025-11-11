@@ -27,14 +27,15 @@ def test_query_endpoint_streaming(mock_process_query):
     # The TestClient will read the streaming response and provide the full body.
     assert response.text == expected_response
 
-def test_query_image_endpoint_valid_image():
+def test_query_image_endpoint_valid_image(mock_process_query):
     image_content = b"fake image data"
     response = client.post(
         "/query/image",
         files={"image": ("test.jpg", BytesIO(image_content), "image/jpeg")}
     )
     assert response.status_code == 200
-    assert response.json() == {"message": "Image 'test.jpg' uploaded successfully"}
+    expected_response = "This is a mocked streaming response."
+    assert response.text == expected_response
 
 def test_query_image_endpoint_invalid_image_type():
     image_content = b"fake image data"

@@ -1,9 +1,10 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from fastapi.responses import StreamingResponse
 from src.models.models import UserQuery
 from src.services import query_service
 import shutil
 import os
+from typing import Optional
 
 router = APIRouter()
 
@@ -16,7 +17,7 @@ async def query(user_query: UserQuery):
     return StreamingResponse(query_service.process_query(user_query), media_type="text/event-stream")
 
 @router.post("/query/image")
-async def query_image(image: UploadFile = File(...)):
+async def query_image(image: UploadFile = File(...), prompt: Optional[str] = Form(None)):
     # Validate file type
     if image.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Invalid image type. Only JPG and PNG are accepted.")
@@ -31,4 +32,10 @@ async def query_image(image: UploadFile = File(...)):
     with open(temp_file_path, "wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
 
-    return {"message": f"Image '{image.filename}' uploaded successfully"}
+    user_query = UserQuery(
+        query_text=prompt,
+        input_modality="MULTIMODAL" if prompt else "IMAGE",
+        image_data=temp_file_path
+    )
+
+    return StreamingResponse(query_service.process_query(user_query), media_type="text/event-stream")

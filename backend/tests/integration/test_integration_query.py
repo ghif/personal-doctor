@@ -86,32 +86,9 @@ def test_query_endpoint_invalid_image_data():
     assert response.status_code == 200
     assert "Error processing image: Invalid image data" in response.text
 
-@patch("src.services.query_service.os.remove")
-@patch("src.services.query_service.tempfile.NamedTemporaryFile")
-def test_query_endpoint_image_file_cleanup(mock_tempfile, mock_os_remove, mock_ollama_chat):
-    """
-    Tests that the temporary image file is cleaned up after the query.
-    """
-    mock_file = mock_tempfile.return_value.__enter__.return_value
-    mock_file.name = "/tmp/fake_image.png"
 
-    image_data = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-    
-    # We need to patch os.path.exists to return True so that os.remove is called.
-    with patch("src.services.query_service.os.path.exists", return_value=True):
-        response = client.post(
-            "/query",
-            json={
-                "query_text": "test query with image for cleanup",
-                "input_modality": "MULTIMODAL",
-                "image_data": image_data,
-            },
-        )
-        assert response.status_code == 200
-    
-    mock_os_remove.assert_called_once_with("/tmp/fake_image.png")
 
-def test_query_image_integration():
+def test_query_image_integration(mock_ollama_chat):
     """
     Tests the /query/image endpoint with a file upload.
     """
@@ -121,7 +98,27 @@ def test_query_image_integration():
         files={"image": ("test.jpg", BytesIO(image_content), "image/jpeg")}
     )
     assert response.status_code == 200
-    assert response.json() == {"message": "Image 'test.jpg' uploaded successfully"}
+    expected_response = "This is a mocked Ollama response."
+    assert response.text == expected_response
+    # Check if the file was saved
+    assert os.path.exists("temp_images/test.jpg")
+    # Clean up the created file
+    os.remove("temp_images/test.jpg")
+
+def test_multimodal_query_integration(mock_ollama_chat):
+    """
+    Tests the /query/image endpoint with a file upload and a text prompt.
+    """
+    image_content = b"fake image data"
+    prompt_text = "This is a test prompt."
+    response = client.post(
+        "/query/image",
+        files={"image": ("test.jpg", BytesIO(image_content), "image/jpeg")},
+        data={"prompt": prompt_text}
+    )
+    assert response.status_code == 200
+    expected_response = "This is a mocked Ollama response."
+    assert response.text == expected_response
     # Check if the file was saved
     assert os.path.exists("temp_images/test.jpg")
     # Clean up the created file

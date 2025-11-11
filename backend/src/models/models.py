@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 from datetime import datetime
 
 class UserQuery(BaseModel):
-    query_text: str
+    query_text: Optional[str] = None
     image_data: Optional[str] = None
     input_modality: str # TEXT, SPEECH, IMAGE
 
