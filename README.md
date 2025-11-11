@@ -24,7 +24,7 @@ The assistant supports multiple modes of interaction for discussing symptoms and
 
 ## Tech Stack
 
--   **AI Model**: `MedGemma` served locally via `Ollama`.
+-   **AI Model**: `MedGemma-4B` served locally via `Ollama`.
 -   **Backend**: `FastAPI` (Python 3.11+)
 -   **Frontend**: `Streamlit` (Python 3.11+)
 -   **Package Management**: `uv`
@@ -43,9 +43,15 @@ This project is built using a spec-driven development process facilitated by the
     pip install uv
     ```
 -   **Ollama**: Must be installed and running.
--   **MedGemma Model**: Pull the required model via Ollama:
+-   **MedGemma Model**: 
+    Pull the required model via Ollama:
     ```bash
     ollama pull amsaravi/medgemma-4b-it:q6
+    ```
+
+    Test the model on the CLI:
+    ```bash
+    ollama run amsaravi/medgemma-4b-it:q6
     ```
 
 ### Installation
