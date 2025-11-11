@@ -1,9 +1,9 @@
 import requests
 from src import config
 from typing import Optional
-import streamlit as st
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-def query_backend(prompt: str, image_file: Optional[st.uploaded_file_manager.UploadedFile] = None):
+def query_backend(prompt: str, image_file: Optional[UploadedFile] = None):
     if image_file:
         files = {'image': (image_file.name, image_file, image_file.type)}
         with requests.post(
