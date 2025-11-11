@@ -7,31 +7,37 @@ st.title(config.APP_TITLE)
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "uploaded_file" not in st.session_state:
+    st.session_state.uploaded_file = None
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# React to user input
-uploaded_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+# Input section
+with st.container():
+    # File upload in a compact form
+    uploaded_file = st.file_uploader("Upload an image (optional)", type=["png", "jpg", "jpeg"], key="file_upload")
+    
+    if uploaded_file is not None:
+        st.session_state.uploaded_file = uploaded_file
+        st.success("✅ Image uploaded successfully!")
+    
+    # Show current uploaded image status
+    if st.session_state.uploaded_file is not None:
+        st.info(f"📷 Image ready: {st.session_state.uploaded_file.name}")
+        st.image(st.session_state.uploaded_file, caption="Uploaded Image.", use_column_width=True)
 
-if uploaded_file is not None:
-    st.image(uploaded_file, caption="Uploaded Image.", use_column_width=True)
-    if st.button("Submit Image"):
-        with st.chat_message("assistant"):
-            response = st.write_stream(query_backend(None, uploaded_file))
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        uploaded_file = None # Clear the file uploader
-
+# Chat input
 if prompt := st.chat_input("What are your symptoms?"):
-    # Display user message in chat message container
+    # Display user message
     st.chat_message("user").markdown(prompt)
-    # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # Get assistant response, passing the image data if it exists
+    # Get response with image if available
     with st.chat_message("assistant"):
-        response = st.write_stream(query_backend(prompt, uploaded_file))
-    # Add assistant response to chat history
+        response = st.write_stream(query_backend(prompt, st.session_state.uploaded_file))
     st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.uploaded_file = None # Clear the file uploader
+    uploaded_file = None # Clear local variable
