@@ -4,13 +4,13 @@ This document outlines the tasks required to implement the Image Upload Button f
 
 ## Phase 1: Setup
 
-- [ ] T001 Install Pillow library in the backend: `pip install Pillow` in `backend/`
-- [ ] T002 Install `python-multipart` in the backend: `pip install python-multipart` in `backend/`
+- [X] T001 Install Pillow library in the backend: `pip install Pillow` in `backend/`
+- [X] T002 Install `python-multipart` in the backend: `pip install python-multipart` in `backend/`
 
 ## Phase 2: Foundational Tasks
 
-- [ ] T003 [P] Create a new endpoint `POST /api/query/image` in `backend/src/api/query.py`
-- [ ] T004 [P] Add the `st.file_uploader` component to `frontend/src/app.py`
+- [X] T003 [P] Create a new endpoint `POST /api/query/image` in `backend/src/api/query.py`
+- [X] T004 [P] Add the `st.file_uploader` component to `frontend/src/app.py`
 
 ## Phase 3: User Story 1 - Upload Image
 
@@ -20,17 +20,17 @@ This document outlines the tasks required to implement the Image Upload Button f
 
 ### Implementation Tasks
 
-- [ ] T005 [US1] Implement image validation (type and size) in `backend/src/api/query.py`
-- [ ] T006 [US1] Implement logic to save the uploaded image to a temporary directory in `backend/src/api/query.py`
-- [ ] T007 [US1] Implement logic to display a preview of the uploaded image in `frontend/src/app.py`
-- [ ] T008 [US1] Implement the "Submit" button and the call to the backend API in `frontend/src/app.py`
-- [ ] T009 [US1] Implement error handling for the API call in `frontend/src/app.py`
-- [ ] T010 [US1] Display a success or error message to the user in `frontend/src/app.py`
+- [X] T005 [US1] Implement image validation (type and size) in `backend/src/api/query.py`
+- [X] T006 [US1] Implement logic to save the uploaded image to a temporary directory in `backend/src/api/query.py`
+- [X] T007 [US1] Implement logic to display a preview of the uploaded image in `frontend/src/app.py`
+- [X] T008 [US1] Implement the "Submit" button and the call to the backend API in `frontend/src/app.py`
+- [X] T009 [US1] Implement error handling for the API call in `frontend/src/app.py`
+- [X] T010 [US1] Display a success or error message to the user in `frontend/src/app.py`
 
 ### Test Tasks
 
-- [ ] T011 [US1] Add unit tests for the new backend endpoint in `backend/tests/test_api.py`
-- [ ] T012 [US1] Add an integration test for the frontend and backend in `backend/tests/integration/test_integration_query.py`
+- [X] T011 [US1] Add unit tests for the new backend endpoint in `backend/tests/test_api.py`
+- [X] T012 [US1] Add an integration test for the frontend and backend in `backend/tests/integration/test_integration_query.py`
 
 ## Dependencies
 

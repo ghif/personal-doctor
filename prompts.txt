@@ -1,0 +1,26 @@
+Specify
+Develop Personal Doctor, a local, privacy-preserving multimodal AI assistant (text + speech + image) tailored for healthcare support (educational, advisory/triage) on a user's local Apple M4 Pro machine. It uses MedGemma as the core AI foundation model served with Ollama. Key user flows are as follows: user speaks or types a question (e.g., "I have chest pain and a mild cough"), optionally upload an image (e.g., skin lesion photo) or speak an image description, assistant responds via chat UI, optionally via voice, providing explanation, triage suggestion ("see a doctor"), and educational content, local-only inference: model and UI run on the user's MacBook, no cloud dependency for core inference. The scope of this tool is non-clinical grade (not a replacemet for a licensed physician). Must include disclaimers. The focus is on personal health education, symptom discussion, image interpretation support, and referral guidance.
+
+Clarify
+For each sample project or project that you create there should be a variable number of tasks between 5 and 15
+tasks for each one randomly distributed into different states of completion. Make sure that there's at least
+one task in each stage of completion.
+
+Read the review and acceptance checklist, and check off each item in the checklist if the feature spec meets the criteria. Leave it empty if it does not.
+
+Plan
+We will develop both frontend and backend services using Python. The frontend will employ the Streamlit framework to provide a clean, user-friendly UI with minimal overhead. The backend will leverage the Agent Development Kit (ADK) from Google in Python, combined with an LLM-serving engine via Ollama and a lightweight REST API layer implemented in FastAPI. The frontend and backend will communicate via REST APIs.
+
+I want you to go through the implementation plan and implementation details, looking for areas that could
+benefit from additional research as ADK and ollama are rapidly changing libraries. For those areas that you identify that
+require further research, I want you to update the research document with additional details about the specific
+versions that we are going to be using in this Taskify application and spawn parallel research tasks to clarify
+any details using research from the web.
+
+The MedGemma model used is specifically from Ollama under the name "amsaravi/medgemma-4b-it:q6".
+
+Now I want you to go and audit the implementation plan and the implementation detail files.
+Read through it with an eye on determining whether or not there is a sequence of tasks that you need
+to be doing that are obvious from reading this. Because I don't know if there's enough here. For example,
+when I look at the core implementation, it would be useful to reference the appropriate places in the implementation
+details where it can find the information as it walks through each step in the core implementation or in the refinement.

@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, AsyncMock
 from src.main import app
 import os
+from io import BytesIO
 
 client = TestClient(app)
 
@@ -109,3 +110,19 @@ def test_query_endpoint_image_file_cleanup(mock_tempfile, mock_os_remove, mock_o
         assert response.status_code == 200
     
     mock_os_remove.assert_called_once_with("/tmp/fake_image.png")
+
+def test_query_image_integration():
+    """
+    Tests the /query/image endpoint with a file upload.
+    """
+    image_content = b"fake image data"
+    response = client.post(
+        "/query/image",
+        files={"image": ("test.jpg", BytesIO(image_content), "image/jpeg")}
+    )
+    assert response.status_code == 200
+    assert response.json() == {"message": "Image 'test.jpg' uploaded successfully"}
+    # Check if the file was saved
+    assert os.path.exists("temp_images/test.jpg")
+    # Clean up the created file
+    os.remove("temp_images/test.jpg")

@@ -1,0 +1,5 @@
+curl -X POST http://127.0.0.1:8000/query \
+    -H "Content-Type: application/json" \
+    -d '{
+    "query_text": "I have a headache and a slight fever.","input_modality": "TEXT"
+    }'
