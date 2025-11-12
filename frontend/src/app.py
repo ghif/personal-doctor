@@ -25,9 +25,14 @@ st.markdown("""<style>
 
 st.markdown("""
 <div class="doctor-welcome">
-    <h1>🩺 Hi, I am your AI personal doctor</h1>
-    <p style="font-size: 1.1rem; margin: 0;">I'm here to help with your health concerns. Please describe your symptoms.</p>
-    <p style="font-size: 1.1rem; margin: 0;">You can type, speak, or upload an image to help me understand your condition better.</p>
+    <h1>🩺 Your AI Personal Doctor</h1>
+    <p style="font-size: 1.0rem; margin: 0;">I'm here to help with your health concerns. All the information you provide will be kept confidential in your private space.</p>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div style="background: linear-gradient(90deg, #e3f2fd, #f3e5f5); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+    <p style="color: #1565c0; margin: 0;">💬 Describe Your Symptoms: You can type, speak, or upload an image to help me understand your condition better.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -77,11 +82,7 @@ with st.container():
 
 # Chat input - modify placeholder text based on uploaded file
 st.markdown("---")
-st.markdown("""
-<div style="background: linear-gradient(90deg, #e3f2fd, #f3e5f5); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
-    <h4 style="color: #1565c0; margin: 0;">💬 Describe Your Symptoms</h4>
-</div>
-""", unsafe_allow_html=True)
+
 if st.session_state.uploaded_file is not None:
     prompt = st.chat_input("🚨 REQUIRED: Describe your symptoms with the uploaded image...", key="chat_input")
 else:

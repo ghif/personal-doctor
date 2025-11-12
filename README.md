@@ -1,11 +1,17 @@
 # Personal Doctor AI Assistant
 
+![Demo](./assets/demo.gif)
+
+*Multimodal AI assistant supporting text, voice, and image inputs for health consultations*
+
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-blue)
 ![Safety](https://img.shields.io/badge/Safety-Disclaimer%20Enforced-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.11+-blueviolet)
 ![Frameworks](https://img.shields.io/badge/Frameworks-FastAPI%20%7C%20Streamlit-green)
 
 A local, privacy-preserving multimodal AI assistant for personal health education and triage support using [MedGemma](https://deepmind.google/models/gemma/medgemma/). This tool runs entirely on your local machine, ensuring that your data remains private.
+
+
 
 ## Core Principles
 
