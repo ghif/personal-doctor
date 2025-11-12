@@ -106,6 +106,22 @@ This project is built using a spec-driven development process facilitated by the
     ```
     The Streamlit UI will open in your browser at `http://localhost:8501`.
 
+### Running the Backend with Docker (Alternative)
+
+As an alternative to running the backend directly, you can use Docker.
+
+1.  **Build the Docker image**:
+    Navigate to the `backend` directory and run:
+    ```bash
+    docker build -t personal-doctor-backend .
+    ```
+
+2.  **Run the Docker container**:
+    ```bash
+    docker run -d -p 8000:8000 --name personal-doctor-backend-container personal-doctor-backend
+    ```
+    The backend API will be available at `http://127.0.0.1:8000`.
+
 ## Usage
 
 1.  Open your web browser and navigate to `http://localhost:8501`.

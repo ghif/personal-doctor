@@ -1,0 +1,21 @@
+# Ignore virtual environment
+.venv/
+venv/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore test-related files
+.pytest_cache/
+tests/
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+
+# Ignore other miscellaneous files
+.DS_Store
+*.log
