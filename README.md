@@ -118,9 +118,11 @@ As an alternative to running the backend directly, you can use Docker.
 
 2.  **Run the Docker container**:
     ```bash
-    docker run -d -p 8000:8000 --name personal-doctor-backend-container personal-doctor-backend
+    docker run -d -p 8000:8000 -e OLLAMA_HOST=http://host.docker.internal:11434 --name personal-doctor-backend-container personal-doctor-backend
     ```
     The backend API will be available at `http://127.0.0.1:8000`.
+
+    > **Note**: `host.docker.internal` is a special DNS name that resolves to the internal IP address of the host machine. This is necessary for the container to communicate with the Ollama service running on your local machine.
 
 ## Usage
 

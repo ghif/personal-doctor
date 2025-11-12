@@ -9,6 +9,10 @@ import binascii
 from PIL import Image, UnidentifiedImageError
 import io
 
+# Get Ollama host from environment variable, default to localhost
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
+client = AsyncClient(host=OLLAMA_HOST)
+
 async def process_query(user_query: UserQuery):
     temp_image_path = None
     try:
@@ -46,7 +50,7 @@ async def process_query(user_query: UserQuery):
                 yield f"Error processing image: {e}"
                 return
 
-        stream = await AsyncClient().chat(
+        stream = await client.chat(
             model=config.MODEL_NAME,
             messages=messages,
             stream=True,
