@@ -1,18 +1,14 @@
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import sys
 import os
 
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from components.voice_recorder import voice_recorder
-import streamlit as st
-
 # This is a simplified testing approach for Streamlit components.
 # More advanced testing might require a different setup.
 
-@patch('services.transcription_api_service.transcribe_audio')
+@patch('services.transcription_service.transcribe_audio')
 def test_voice_recorder_transcription(mock_transcribe_audio):
     # Mock the transcription service to return a specific text
     mock_transcribe_audio.return_value = "Hello, world."
