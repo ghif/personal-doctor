@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 ollama
-google-adk
 pydantic
 pytest
 httpx

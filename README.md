@@ -19,14 +19,14 @@ This project is governed by a strict constitution that prioritizes user safety a
 The assistant supports multiple modes of interaction for discussing symptoms and seeking health information:
 -   **Symptom Inquiry via Text**: Ask health-related questions through a standard chat interface.
 -   **Symptom Inquiry with Image Upload**: Upload an image of a visual symptom (e.g., a skin rash) for more contextual information.
--   **Voice-to-Text and Text-to-Speech**: Interact with the assistant using your voice for a hands-free experience (planned feature).
+-   **Voice-to-Text and Text-to-Speech**: Interact with the assistant using your voice for a hands-free experience.
 -   **Educational Content**: Receive information about potential causes, at-home care, and guidance on when to seek professional help.
 
 ## Tech Stack
 
 -   **AI Model**: `MedGemma-4B` served locally via `Ollama`.
 -   **Backend**: `FastAPI` (Python 3.11+)
--   **Frontend**: `Streamlit` (Python 3.11+)
+-   **Frontend**: `Streamlit` (Python 3.11+), `streamlit-webrtc`, `scipy`, and `openai-whisper` for voice-to-text functionality.
 -   **Package Management**: `uv`
 
 ## Development Process
