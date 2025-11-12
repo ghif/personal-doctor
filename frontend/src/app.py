@@ -60,7 +60,7 @@ with st.container():
     # File upload in a compact form
     st.markdown("**📷 Upload Medical Image**")
     st.markdown("*Share photos of symptoms, test results, or medical documents*")
-    uploaded_file = st.file_uploader("", type=["png", "jpg", "jpeg"], key="file_upload")
+    uploaded_file = st.file_uploader("Upload an image (optional):", type=["png", "jpg", "jpeg"], key="file_upload")
     
     if uploaded_file is not None:
         st.session_state.uploaded_file = uploaded_file
