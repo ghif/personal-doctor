@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: Text-to-Speech API
+  version: 1.0.0
+  description: API for generating and streaming audio from text.
+paths:
+  /tts:
+    post:
+      summary: Generate and stream audio from text
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The text to be converted to speech.
+      responses:
+        '200':
+          description: A stream of audio data.
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request, e.g., no text provided.
+        '500':
+          description: Internal server error, e.g., TTS service failed.

@@ -1,14 +1,13 @@
 import streamlit as st
 from services.api_service import query_backend
-from src import config
-from src.components.voice_recorder import voice_recorder
+import config
+from components.voice_recorder import voice_recorder
+from components.audio_player import audio_player
 
 # Welcome header
-# st.title(config.APP_TITLE)
 st.set_page_config(
     page_title="Personal Doctor AI",
     page_icon="🩺",
-    # layout="wide",
     initial_sidebar_state="collapsed"
 )
 
@@ -36,7 +35,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -46,14 +44,13 @@ if "transcribed_text" not in st.session_state:
     st.session_state.transcribed_text = ""
 if "auto_submit" not in st.session_state:
     st.session_state.auto_submit = False
-
-
+if "last_response" not in st.session_state:
+    st.session_state.last_response = ""
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-
 
 # Input section
 with st.container():
@@ -90,16 +87,13 @@ else:
 
 # Handle prompt priority: manual input always overrides transcribed text
 if prompt:
-    # Manual text input takes priority - clear any transcribed text
     final_prompt = prompt
-    st.session_state.transcribed_text = ""  # Clear transcribed text when manual input is used
-    st.session_state.auto_submit = False  # Reset auto-submit flag
-# elif st.session_state.get("transcribed_text") and st.session_state.uploaded_file is None:
+    st.session_state.transcribed_text = ""
+    st.session_state.auto_submit = False
 elif st.session_state.get("transcribed_text"):
-    # Use transcribed text only if no manual input AND no uploaded file
     final_prompt = st.session_state.transcribed_text
-    st.session_state.transcribed_text = ""  # Clear after use
-    st.session_state.auto_submit = False  # Reset auto-submit flag
+    st.session_state.transcribed_text = ""
+    st.session_state.auto_submit = False
 else:
     final_prompt = None
 
@@ -116,8 +110,14 @@ if final_prompt:
     with st.chat_message("assistant"):
         response = st.write_stream(query_backend(final_prompt, st.session_state.uploaded_file))
     st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    # Store response for audio player
+    st.session_state.last_response = response
+    
+    # Show audio player
+    audio_player()
 
     # Clear inputs after processing
     st.session_state.uploaded_file = None
-    st.session_state.auto_submit = False  # Reset auto-submit flag
-    uploaded_file = None # Clear local variable
+    st.session_state.auto_submit = False
+    uploaded_file = None

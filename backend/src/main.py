@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.api import query
+from src.api import query, tts
 
 app = FastAPI(
     title="Personal Doctor AI API",
@@ -7,6 +7,7 @@ app = FastAPI(
 )
 
 app.include_router(query.router)
+app.include_router(tts.router)
 
 @app.get("/")
 def read_root():

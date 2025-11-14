@@ -1,5 +1,5 @@
 import requests
-from src import config
+import config
 from typing import Optional
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
