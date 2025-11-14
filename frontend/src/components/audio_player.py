@@ -1,6 +1,5 @@
 import streamlit as st
 from services.tts_service import tts_service
-import config
 
 def audio_player():
     """
@@ -71,7 +70,7 @@ def audio_player():
                 
                 
         else:
-            print(f"⚠️ Response too short for audio generation")
+            print("⚠️ Response too short for audio generation")
             st.info("Response too short for audio generation")
     else:
         print("ℹ️ No response available for audio generation")

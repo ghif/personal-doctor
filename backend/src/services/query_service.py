@@ -2,7 +2,6 @@ from src.models.models import UserQuery
 from ollama import AsyncClient
 from src import config
 import base64
-import uuid
 import os
 import tempfile
 import binascii
@@ -43,7 +42,7 @@ async def process_query(user_query: UserQuery):
                 messages[0]['images'] = [temp_image_path]
             except (binascii.Error, UnidentifiedImageError):
                 # If image processing fails, yield an error and stop
-                yield f"Error processing image: Invalid image data"
+                yield "Error processing image: Invalid image data"
                 return
             except Exception as e:
                 # If image processing fails, yield an error and stop

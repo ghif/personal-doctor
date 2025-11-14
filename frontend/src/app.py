@@ -1,6 +1,5 @@
 import streamlit as st
 from services.api_service import query_backend
-import config
 from components.voice_recorder import voice_recorder
 from components.audio_player import audio_player
 
