@@ -1,4 +1,4 @@
-# Personal Doctor AI Assistant
+# Personal Doctor AI Assistant with Streaming Text-to-Speech
 
 ![Demo](./assets/demo.gif)
 
@@ -7,7 +7,7 @@
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-blue)
 ![Safety](https://img.shields.io/badge/Safety-Disclaimer%20Enforced-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.11+-blueviolet)
-![Frameworks](https://img.shields.io/badge/Frameworks-FastAPI%20%7C%20Streamlit-green)
+![Frameworks](https://img.shields.io/badge/Frameworks-FastAPI%20%7C%20Streamlit%20%7C%20Coqui%20TTS-green)
 
 A local, privacy-preserving multimodal AI assistant for personal health education and triage support using [MedGemma](https://deepmind.google/models/gemma/medgemma/). This tool runs entirely on your local machine, ensuring that your data remains private.
 
@@ -25,13 +25,14 @@ This project is governed by a strict constitution that prioritizes user safety a
 The assistant supports multiple modes of interaction for discussing symptoms and seeking health information:
 -   **Symptom Inquiry via Text**: Ask health-related questions through a standard chat interface.
 -   **Symptom Inquiry with Image Upload**: Upload an image of a visual symptom (e.g., a skin rash) for more contextual information.
--   **Voice-to-Text and Text-to-Speech**: Interact with the assistant using your voice for a hands-free experience.
+-   **Voice-to-Text**: Interact with the assistant using your voice for a hands-free experience.
+-   **Streaming Text-to-Speech**: Hear the AI's responses in real-time.
 -   **Educational Content**: Receive information about potential causes, at-home care, and guidance on when to seek professional help.
 
 ## Tech Stack
 
 -   **AI Model**: `MedGemma-4B` served locally via `Ollama`.
--   **Backend**: `FastAPI` (Python 3.11+)
+-   **Backend**: `FastAPI` (Python 3.11+), `Coqui TTS`
 -   **Frontend**: `Streamlit` (Python 3.11+), `streamlit-webrtc`, `scipy`, and `openai-whisper` for voice-to-text functionality.
 -   **Package Management**: `uv`
 
@@ -130,6 +131,7 @@ As an alternative to running the backend directly, you can use Docker.
 2.  Type a health-related question into the chat input box.
 3.  Optionally, use the file uploader to attach an image related to your query.
 4.  Press Enter or click the submit button to get a response from the AI assistant.
+5.  Click the "Play Audio" button to hear the AI's response.
 
 ---
 
