@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Personal Doctor AI - Transcription Service",
+    "version": "1.0.0",
+    "description": "API for transcribing audio to text."
+  },
+  "paths": {
+    "/transcribe": {
+      "post": {
+        "summary": "Transcribe audio to text",
+        "description": "Accepts a WAV audio file and returns the transcribed text.",
+        "operationId": "transcribe_audio",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The WAV audio file to transcribe."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful transcription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TranscriptionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid audio file or format"
+          },
+          "500": {
+            "description": "Internal Server Error - Transcription failed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TranscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The transcribed text."
+          }
+        }
+      }
+    }
+  }
+}

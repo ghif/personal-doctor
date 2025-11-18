@@ -1,13 +1,4 @@
-import whisper
-import streamlit as st
-
-@st.cache_resource
-def load_model():
-    # model = whisper.load_model("base")
-    model = whisper.load_model("small")
-    return model
+from .api_service import transcribe_audio as transcribe_audio_backend
 
 def transcribe_audio(audio_file_path):
-    model = load_model()
-    result = model.transcribe(audio_file_path)
-    return result["text"]
+    return transcribe_audio_backend(audio_file_path)

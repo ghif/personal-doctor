@@ -5,6 +5,14 @@
 **Status**: Draft  
 **Input**: User description: "I want the voice-to-text service is implemented in the backend service, instead of frontend application adhering to clean architecture and consistency with other backend services. Don't change the functionalities based on the latest version."
 
+## Clarifications
+
+### Session 2025-11-18
+
+- Q: How should the new backend API endpoint for transcription be authenticated? → A: No authentication
+- Q: What audio format(s) should the backend transcription service officially support? → A: WAV
+- Q: What is the maximum time the backend should spend on a single transcription request before it times out? → A: 30 seconds
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Backend Audio Transcription (Priority: P1)
@@ -36,6 +44,9 @@ As a system developer, I want the voice-to-text transcription to be processed on
 - **FR-003**: The backend service MUST return the transcribed text in a structured format (e.g., JSON) to the caller.
 - **FR-004**: The frontend application MUST be updated to call the new backend transcription endpoint instead of performing transcription locally.
 - **FR-005**: The system MUST handle potential errors during the transcription process gracefully (e.g., network errors, service unavailability).
+- **FR-006**: The transcription endpoint MUST NOT require authentication.
+- **FR-007**: The backend service MUST support the WAV audio format.
+- **FR-008**: The backend service MUST time out transcription requests that take longer than 30 seconds.
 
 ## Success Criteria *(mandatory)*
 

@@ -7,3 +7,4 @@ httpx
 Pillow
 TTS
 python-multipart
+openai-whisper

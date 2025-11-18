@@ -30,3 +30,10 @@ def query_backend(prompt: str, image_file: Optional[UploadedFile] = None):
             for chunk in r.iter_content(chunk_size=None):
                 if chunk:
                     yield chunk.decode('utf-8')
+
+def transcribe_audio(audio_file_path: str):
+    with open(audio_file_path, "rb") as f:
+        files = {'file': ('audio.wav', f, 'audio/wav')}
+        response = requests.post(f"{config.BACKEND_URL}/transcribe", files=files)
+        response.raise_for_status()
+        return response.json()["text"]

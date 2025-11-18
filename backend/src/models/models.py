@@ -18,3 +18,6 @@ class Conversation(BaseModel):
     history: List[Union[UserQuery, AIResponse]]
     start_time: datetime
     end_time: Optional[datetime] = None
+
+class TranscriptionResponse(BaseModel):
+    text: str

@@ -4,6 +4,7 @@ Auto-generated from all feature plans. Last updated: 2025-11-10
 
 ## Active Technologies
 - Python 3.11+ + FastAPI, Streamlit, Coqui TTS (004-streaming-text-to-speech)
+- Python 3.11+ + FastAPI, openai-whisper (005-backend-voice-to-text)
 
 - Python 3.11+ + Streamlit, FastAPI, Google ADK, Ollama (001-personal-doctor-ai)
 
@@ -23,10 +24,10 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 Python 3.11+: Follow standard conventions
 
 ## Recent Changes
+- 005-backend-voice-to-text: Added Python 3.11+ + FastAPI, openai-whisper
+- 005-backend-voice-to-text: Added Python 3.11+
 - 004-streaming-text-to-speech: Added Python 3.11+ + FastAPI, Streamlit, Coqui TTS
-- 003-voice-to-text-input: Added Python 3.11+ + Streamlit
 
-- 001-personal-doctor-ai: Added Python 3.11+ + Streamlit, FastAPI, Google ADK, Ollama
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
