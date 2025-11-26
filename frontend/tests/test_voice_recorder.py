@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../s
 # This is a simplified testing approach for Streamlit components.
 # More advanced testing might require a different setup.
 
-@patch('services.transcription_service.transcribe_audio')
+@patch('services.api_service.transcribe_audio')
 def test_voice_recorder_transcription(mock_transcribe_audio):
     # Mock the transcription service to return a specific text
     mock_transcribe_audio.return_value = "Hello, world."

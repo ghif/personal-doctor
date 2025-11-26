@@ -1,5 +1,5 @@
 import streamlit as st
-from services.tts_service import get_summary_tts
+from services.api_service import get_summary_tts
 
 def audio_player():
     """

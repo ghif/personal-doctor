@@ -1,5 +1,5 @@
 import streamlit as st
-from services.transcription_service import transcribe_audio
+from services.api_service import transcribe_audio
 import tempfile
 import os
 
