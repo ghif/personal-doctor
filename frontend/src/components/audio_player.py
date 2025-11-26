@@ -12,7 +12,7 @@ def audio_player():
         
         if len(response_text) > 10:
             with st.container():
-                st.markdown("**🔊 Listen to Summary**")
+                st.markdown("**🔊 Listen to Audio**")
                 
                 button_key = f"play_audio_{hash(response_text)}"
                 
@@ -40,8 +40,8 @@ def audio_player():
                     # Display audio if available in session state
                     if 'generated_audio' in st.session_state and st.session_state['generated_audio']:
                         print("✅ Displaying generated audio")
-                        st.success("🎵 Audio Summary ready!")
-                        st.audio(st.session_state['generated_audio'], format="audio/wav")
+                        st.success("🎵 Audio ready!")
+                        st.audio(st.session_state['generated_audio'], format="audio/wav", autoplay=True)
                         
                         # Save debug file
                         try:
@@ -61,7 +61,7 @@ def audio_player():
                 
                 # Button with callback
                 button_clicked = st.button(
-                    "🔊 Play Audio Summary", 
+                    "🔊 Play Audio", 
                     key=button_key, 
                     type="secondary",
                     on_click=handle_audio_generation

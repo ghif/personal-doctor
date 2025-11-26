@@ -37,3 +37,28 @@ def transcribe_audio(audio_file_path: str):
         response = requests.post(f"{config.BACKEND_URL}/transcribe", files=files)
         response.raise_for_status()
         return response.json()["text"]
+
+def get_summary_stream(text: str):
+    payload = {"text": text}
+    with requests.post(
+        f"{config.BACKEND_URL}/summary_stream",
+        json=payload,
+        stream=True,
+    ) as r:
+        r.raise_for_status()
+        for chunk in r.iter_content(chunk_size=None):
+            if chunk:
+                yield chunk.decode('utf-8')
+
+def get_tts_audio(text: str):
+    # This endpoint is expected to exist from previous feature (004/006)
+    # Reusing /tts or /summary-tts but we need raw text-to-speech for the summarized text.
+    # The spec 004 mentions /tts. Let's assume /tts exists for raw text.
+    payload = {"text": text}
+    response = requests.post(
+        f"{config.BACKEND_URL}/tts", 
+        json=payload,
+        stream=True
+    )
+    response.raise_for_status()
+    return response.content

@@ -1,5 +1,5 @@
 import streamlit as st
-from services.api_service import query_backend
+from services.api_service import query_backend, get_summary_stream, get_tts_audio
 from components.voice_recorder import voice_recorder
 from components.audio_player import audio_player
 
@@ -56,18 +56,20 @@ with st.container():
     # File upload in a compact form
     st.markdown("**📷 Upload Medical Image**")
     st.markdown("*Share photos of symptoms, test results, or medical documents*")
-    uploaded_file = st.file_uploader("Upload an image (optional):", type=["png", "jpg", "jpeg"], key="file_upload")
-    
-    if uploaded_file is not None:
-        st.session_state.uploaded_file = uploaded_file
-        st.session_state.transcribed_text = ""  # Clear transcribed text when a new file is uploaded
-        st.success("✅ Image uploaded successfully!")
-        st.warning("📝 **Required:** Please describe your symptoms or what you'd like me to analyze in this image using text or voice input below.")
-    
-    # Show current uploaded image status
-    if st.session_state.uploaded_file is not None:
+    if st.session_state.uploaded_file is None:
+        uploaded_file_new = st.file_uploader("Upload an image (optional):", type=["png", "jpg", "jpeg"], key="file_upload")
+        if uploaded_file_new is not None:
+            st.session_state.uploaded_file = uploaded_file_new
+            st.session_state.transcribed_text = ""  # Clear transcribed text when a new file is uploaded
+            st.success("✅ Image uploaded successfully!")
+            st.warning("📝 **Required:** Please describe your symptoms or what you'd like me to analyze in this image using text or voice input below.")
+    else:
+        # Show current uploaded image status and provide a clear button
         st.info(f"📷 Image ready: {st.session_state.uploaded_file.name}")
         st.image(st.session_state.uploaded_file, caption="Uploaded Image.", use_column_width=True)
+        if st.button("Clear Image", key="clear_image_button"):
+            st.session_state.uploaded_file = None
+            st.experimental_rerun() # Rerun to remove the image and show the uploader
 
     # Voice recorder
     st.markdown("**🎤 Voice Recording**")
@@ -110,13 +112,31 @@ if final_prompt:
         response = st.write_stream(query_backend(final_prompt, st.session_state.uploaded_file))
     st.session_state.messages.append({"role": "assistant", "content": response})
     
-    # Store response for audio player
+    # Store response for audio player and summary
     st.session_state.last_response = response
     
-    # Show audio player
+    # Show audio player (existing feature)
     audio_player()
 
     # Clear inputs after processing
     st.session_state.uploaded_file = None
     st.session_state.auto_submit = False
     uploaded_file = None
+
+# Audio Summary Feature
+if st.session_state.last_response:
+    st.markdown("---")
+    st.markdown("### 🔈 Audio Summary")
+    if st.button("Play Audio Summary"):
+        with st.container():
+            st.markdown("**Generating Summary:**")
+            # Stream the summary text
+            summary_text = st.write_stream(get_summary_stream(st.session_state.last_response))
+            
+            if summary_text:
+                st.markdown("**Playing Audio...**")
+                try:
+                    audio_bytes = get_tts_audio(summary_text)
+                    st.audio(audio_bytes, format='audio/wav', autoplay=True)
+                except Exception as e:
+                    st.error(f"Failed to generate audio: {e}")

@@ -1,0 +1,52 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Stream Summary Text API",
+    "version": "1.0.0",
+    "description": "API for streaming summarized text from an LLM response."
+  },
+  "paths": {
+    "/summary_stream": {
+      "post": {
+        "summary": "Stream a summary of the provided text",
+        "description": "Takes a full text input, generates a concise summary using the SummaryAgent, and streams the result back as text chunks.",
+        "operationId": "stream_summary",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "The original long-form text to summarize."
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful streaming response",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "Stream of text chunks."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during summarization"
+          }
+        }
+      }
+    }
+  }
+}

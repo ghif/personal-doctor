@@ -31,3 +31,12 @@ async def summary_tts_endpoint(request: TTSRequest):
     except Exception as e:
         logger.error(f"Error in Summary TTS endpoint: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+@router.post("/summary_stream")
+async def summary_stream_endpoint(request: TTSRequest):
+    logger.info(f"Received Summary Stream request for text length: {len(request.text)}")
+    try:
+        return StreamingResponse(summary_agent.summarize_stream(request.text), media_type="text/event-stream")
+    except Exception as e:
+        logger.error(f"Error in Summary Stream endpoint: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
