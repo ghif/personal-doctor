@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TTS Summary API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/summary-tts": {
+      "post": {
+        "summary": "Generate Audio Summary",
+        "description": "Accepts full text, summarizes it using an ADK agent to remove punctuation and shorten it, then returns the audio stream.",
+        "operationId": "generate_summary_audio",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TTSRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Audio stream of the summary",
+            "content": {
+              "audio/wav": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TTSRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The original full text to summarize and speak."
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import streamlit as st
-from services.tts_service import tts_service
+from services.tts_service import get_summary_tts
 
 def audio_player():
     """
@@ -12,19 +12,20 @@ def audio_player():
         
         if len(response_text) > 10:
             with st.container():
-                st.markdown("**🔊 Listen to Response**")
+                st.markdown("**🔊 Listen to Summary**")
                 
                 button_key = f"play_audio_{hash(response_text)}"
                 
                 # Callback function to handle button click
                 def handle_audio_generation():
                     print("🎯 Button callback triggered!")
-                    tts_text = response_text[:500] + "..." if len(response_text) > 500 else response_text
-                    print(f"Generating audio for: {tts_text[:100]}...")
+                    # Send full text to summary service
+                    tts_text = response_text
+                    print(f"Generating summary audio for text length: {len(tts_text)}...")
                     
                     try:
-                        audio_bytes = tts_service(tts_text)
-                        print(f"TTS service returned: {len(audio_bytes) if audio_bytes else 0} bytes")
+                        audio_bytes = get_summary_tts(tts_text)
+                        print(f"Summary TTS service returned: {len(audio_bytes) if audio_bytes else 0} bytes")
                         
                         if audio_bytes and len(audio_bytes) > 0:
                             st.session_state['generated_audio'] = audio_bytes
@@ -39,7 +40,7 @@ def audio_player():
                     # Display audio if available in session state
                     if 'generated_audio' in st.session_state and st.session_state['generated_audio']:
                         print("✅ Displaying generated audio")
-                        st.success("🎵 Audio ready!")
+                        st.success("🎵 Audio Summary ready!")
                         st.audio(st.session_state['generated_audio'], format="audio/wav")
                         
                         # Save debug file
@@ -56,11 +57,11 @@ def audio_player():
                         st.error("❌ Failed to generate audio")
                         st.info("💡 Check backend TTS service")
                     
-                    st.info("🎧 Click 'Play Audio' to hear the AI response")
+                    st.info("🎧 Click 'Play Audio' to hear the AI summary")
                 
                 # Button with callback
                 button_clicked = st.button(
-                    "🔊 Play Audio", 
+                    "🔊 Play Audio Summary", 
                     key=button_key, 
                     type="secondary",
                     on_click=handle_audio_generation

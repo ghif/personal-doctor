@@ -37,3 +37,5 @@ backend/.DS_Store
 .vscode/
 *.swp
 *.swo
+*.egg-info/
+temp_images/

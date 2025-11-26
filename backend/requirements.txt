@@ -8,3 +8,5 @@ Pillow
 TTS
 python-multipart
 openai-whisper
+google-adk
+litellm

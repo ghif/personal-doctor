@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, AsyncMock
+from unittest.mock import patch, AsyncMock, MagicMock
 from src.main import app
 import os
 from io import BytesIO
@@ -10,25 +10,21 @@ client = TestClient(app)
 @pytest.fixture
 def mock_ollama_chat():
     """
-    Mocks the ollama.AsyncClient.chat function to return a streaming response.
+    Mocks the litellm.acompletion function to return a streaming response.
     """
     mock_chat_stream = AsyncMock()
     
-    async def async_gen():
-        response_chunks = [
-            {'message': {'content': "This "}},
-            {'message': {'content': "is "}},
-            {'message': {'content': "a "}},
-            {'message': {'content': "mocked "}},
-            {'message': {'content': "Ollama "}},
-            {'message': {'content': "response."}},
-        ]
-        for chunk in response_chunks:
-            yield chunk
+    async def async_gen(*args, **kwargs):
+        response_chunks = ["This ", "is ", "a ", "mocked ", "Ollama ", "response."]
+        for content in response_chunks:
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = content
+            yield mock_chunk
             
-    mock_chat_stream.return_value = async_gen()
+    mock_chat_stream.side_effect = async_gen
 
-    with patch("src.services.query_service.AsyncClient.chat", new=mock_chat_stream) as mock:
+    with patch("src.agents.query_agent.litellm.acompletion", new=mock_chat_stream) as mock:
         yield mock
 
 def test_query_endpoint_integration_streaming(mock_ollama_chat):
@@ -66,7 +62,7 @@ def test_query_endpoint_ollama_error():
     Tests that the endpoint handles errors from the ollama service gracefully.
     """
     mock_chat_stream = AsyncMock(side_effect=Exception("Ollama connection failed"))
-    with patch("src.services.query_service.AsyncClient.chat", new=mock_chat_stream):
+    with patch("src.agents.query_agent.litellm.acompletion", new=mock_chat_stream):
         response = client.post("/query", json={"query_text": "test query", "input_modality": "TEXT"})
         assert response.status_code == 200
         assert "An error occurred while querying the model: Ollama connection failed" in response.text
@@ -85,8 +81,6 @@ def test_query_endpoint_invalid_image_data():
     )
     assert response.status_code == 200
     assert "Error processing image: Invalid image data" in response.text
-
-
 
 def test_query_image_integration(mock_ollama_chat):
     """
