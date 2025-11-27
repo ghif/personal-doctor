@@ -25,8 +25,7 @@ This project is governed by a strict constitution that prioritizes user safety a
 The assistant supports multiple modes of interaction for discussing symptoms and seeking health information:
 -   **Symptom Inquiry via Text**: Ask health-related questions through a standard chat interface.
 -   **Symptom Inquiry with Image Upload**: Upload an image of a visual symptom (e.g., a skin rash) for more contextual information.
-    -   **Voice-to-Text**: Interact with the assistant using your voice, with transcription handled by the backend service.
-
+-   **Voice-to-Text**: Interact with the assistant using your voice, with transcription handled by the backend service.
 -   **Streaming Text Summary with Audio Playback**: When clicking 'Play Audio Summary', a concise summary of the AI's response streams onto the screen, followed by automatic audio playback of that summary. This provides quick visual and auditory consumption of key information.
 -   **Real-time Audio Responses (Streaming TTS)**: Hear the AI's full responses in real-time if a direct audio response is generated (distinct from the summary).
 -   **Educational Content**: Receive information about potential causes, at-home care, and guidance on when to seek professional help.
@@ -34,7 +33,7 @@ The assistant supports multiple modes of interaction for discussing symptoms and
 ## Tech Stack
 
 -   **AI Model**: `MedGemma-4B` served locally via `Ollama`.
--   **Backend**: `FastAPI` (Python 3.11+), incorporating `LiteLLM` for LLM integrations, and dedicated audio services (`Coqui TTS` for Text-to-Speech, `Whisper` for Voice-to-Text).
+-   **Backend**: `FastAPI` (Python 3.11+), incorporating `LiteLLM` for local LLM integrations, and dedicated audio services (`Coqui TTS` for Text-to-Speech, `Whisper` for Voice-to-Text).
 -   **Frontend**: `Streamlit` (Python 3.11+), `streamlit-webrtc`, `scipy`
 -   **Package Management**: `uv`
 
