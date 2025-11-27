@@ -7,7 +7,7 @@
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-blue)
 ![Safety](https://img.shields.io/badge/Safety-Disclaimer%20Enforced-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.11+-blueviolet)
-![Frameworks](https://img.shields.io/badge/Frameworks-FastAPI%20%7C%20Streamlit%20%7C%20Coqui%20TTS-green)
+![Frameworks](https://img.shields.io/badge/Frameworks-FastAPI%20%7C%20Streamlit%20%7C%20LiteLLM%20%7C%20Coqui%20TTS%20%7C%20Whisper-green)
 
 A local, privacy-preserving multimodal AI assistant for personal health education and triage support using [MedGemma](https://deepmind.google/models/gemma/medgemma/). This tool runs entirely on your local machine, ensuring that your data remains private.
 
@@ -27,13 +27,14 @@ The assistant supports multiple modes of interaction for discussing symptoms and
 -   **Symptom Inquiry with Image Upload**: Upload an image of a visual symptom (e.g., a skin rash) for more contextual information.
     -   **Voice-to-Text**: Interact with the assistant using your voice, with transcription handled by the backend service.
 
--   **Streaming Text-to-Speech**: Hear the AI's responses in real-time.
+-   **Streaming Text Summary with Audio Playback**: When clicking 'Play Audio Summary', a concise summary of the AI's response streams onto the screen, followed by automatic audio playback of that summary. This provides quick visual and auditory consumption of key information.
+-   **Real-time Audio Responses (Streaming TTS)**: Hear the AI's full responses in real-time if a direct audio response is generated (distinct from the summary).
 -   **Educational Content**: Receive information about potential causes, at-home care, and guidance on when to seek professional help.
 
 ## Tech Stack
 
 -   **AI Model**: `MedGemma-4B` served locally via `Ollama`.
--   **Backend**: `FastAPI` (Python 3.11+), `Coqui TTS`, `Whisper`
+-   **Backend**: `FastAPI` (Python 3.11+), incorporating `LiteLLM` for LLM integrations, and dedicated audio services (`Coqui TTS` for Text-to-Speech, `Whisper` for Voice-to-Text).
 -   **Frontend**: `Streamlit` (Python 3.11+), `streamlit-webrtc`, `scipy`
 -   **Package Management**: `uv`
 
@@ -61,9 +62,9 @@ This project is built using a spec-driven development process facilitated by the
     ```bash
     ollama run amsaravi/medgemma-4b-it:q6
     ```
--   **ffmpeg**: Required for audio processing by Whisper.
+-   **ffmpeg and other audio/build dependencies**: Required for audio processing by Whisper and Coqui TTS. For Docker builds, `build-essential`, `libsndfile1`, and `espeak-ng` are also needed.
     -   **macOS (using Homebrew)**: `brew install ffmpeg`
-    -   **Linux (using apt)**: `sudo apt update && sudo apt install ffmpeg`
+    -   **Linux (using apt)**: `sudo apt update && sudo apt install ffmpeg build-essential libsndfile1 espeak-ng`
     -   **Windows**: Download from the official ffmpeg website.
 
 ### Installation
@@ -132,7 +133,7 @@ As an alternative to running the backend directly, you can use Docker.
 2.  Type a health-related question into the chat input box.
 3.  Optionally, use the file uploader to attach an image related to your query.
 4.  Press Enter or click the submit button to get a response from the AI assistant.
-5.  Click the "Play Audio" button to hear the AI's response.
+5.  Click the "Play Audio Summary" button. A text summary will stream onto the screen, followed by the automatic audio playback of that summary.
 
 ---
 
