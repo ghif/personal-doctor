@@ -1,8 +1,8 @@
-# backend/src/api/transcription.py
+# backend/src/api/routers/transcription.py
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from ..services.transcription_service import TranscriptionService
-from ..models.models import TranscriptionResponse
+from src.services.audio.transcription import TranscriptionService
+from src.schemas.chat import TranscriptionResponse
 import shutil
 import os
 import logging

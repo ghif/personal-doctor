@@ -3,6 +3,17 @@ FROM python:3.11-slim
 
 # Install ffmpeg
 RUN apt-get update && apt-get install -y ffmpeg
+# Install system dependencies
+# ffmpeg: for audio processing (whisper)
+# build-essential: for compiling python packages (gcc, etc.)
+# libsndfile1: for audio file reading/writing
+# espeak-ng: for TTS phonemization
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    build-essential \
+    libsndfile1 \
+    espeak-ng \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app

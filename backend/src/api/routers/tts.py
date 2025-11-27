@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from src.services.tts_service import tts_service
+from src.services.audio.tts import tts_service
 import logging
 
 # Configure logging

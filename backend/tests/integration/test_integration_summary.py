@@ -12,7 +12,7 @@ def test_summary_stream_endpoint():
         yield "summary "
         yield "result."
 
-    with patch("src.api.summary.summary_agent.summarize_stream", side_effect=mock_stream):
+    with patch("src.api.routers.summary.summary_service.summarize_stream", side_effect=mock_stream):
         response = client.post("/summary_stream", json={"text": "Long input text needed."})
         assert response.status_code == 200
         # Check if it is a stream

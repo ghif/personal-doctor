@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import MagicMock, patch
-from src.services.transcription_service import TranscriptionService
+from src.services.audio.transcription import TranscriptionService
 
 @pytest.fixture
 def mock_whisper():

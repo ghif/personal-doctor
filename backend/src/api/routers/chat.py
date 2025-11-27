@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from fastapi.responses import StreamingResponse
-from src.models.models import UserQuery
-from src.services import query_service
+from src.schemas.chat import UserQuery
+from src.services.llm.chat import ChatService
 import shutil
 import os
 from typing import Optional
@@ -12,9 +12,19 @@ router = APIRouter()
 TEMP_DIR = "temp_images"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+# Initialize the service
+chat_service = ChatService()
+
+async def process_query_stream(user_query: UserQuery):
+    """
+    Process the user query using the ChatService.
+    """
+    async for chunk in chat_service.process_query(user_query.query_text, user_query.image_data):
+        yield chunk
+
 @router.post("/query")
 async def query(user_query: UserQuery):
-    return StreamingResponse(query_service.process_query(user_query), media_type="text/event-stream")
+    return StreamingResponse(process_query_stream(user_query), media_type="text/event-stream")
 
 @router.post("/query/image")
 async def query_image(image: UploadFile = File(...), prompt: Optional[str] = Form(None)):
@@ -38,4 +48,4 @@ async def query_image(image: UploadFile = File(...), prompt: Optional[str] = For
         image_data=temp_file_path
     )
 
-    return StreamingResponse(query_service.process_query(user_query), media_type="text/event-stream")
+    return StreamingResponse(process_query_stream(user_query), media_type="text/event-stream")

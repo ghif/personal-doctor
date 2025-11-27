@@ -20,7 +20,7 @@ def dummy_audio_file():
     yield file_path
     os.remove(file_path)
 
-@patch('src.services.transcription_service.TranscriptionService.transcribe')
+@patch('src.services.audio.transcription.TranscriptionService.transcribe')
 def test_transcribe_audio_success(mock_transcribe, dummy_audio_file):
     mock_transcribe.return_value = "mocked transcription"
     with open(dummy_audio_file, "rb") as f:

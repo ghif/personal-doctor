@@ -13,7 +13,7 @@ def mock_process_query():
         for chunk in response_chunks:
             yield chunk
 
-    with patch("src.services.query_service.process_query", new=mock_query_stream) as _mock:
+    with patch("src.api.routers.chat.process_query_stream", new=mock_query_stream) as _mock:
         yield _mock
 
 def test_query_endpoint_streaming(mock_process_query):

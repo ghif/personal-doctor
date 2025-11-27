@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
-from src.agents.summary_agent import SummaryAgent
+from src.services.llm.summary import SummaryService
 
 @pytest.mark.asyncio
 async def test_summarize_stream_valid_input():
@@ -21,8 +21,8 @@ async def test_summarize_stream_valid_input():
     async def mock_acompletion_fn(*args, **kwargs):
         return stream_gen()
 
-    with patch("src.agents.summary_agent.litellm.acompletion", side_effect=mock_acompletion_fn) as mock_acompletion:
-        agent = SummaryAgent()
+    with patch("src.services.llm.summary.litellm.acompletion", side_effect=mock_acompletion_fn) as mock_acompletion:
+        agent = SummaryService()
         # Mock agent.agent to ensure initialization doesn't fail or block, 
         # though summarize_stream might bypass self.agent.run
         agent.agent = MagicMock() 
@@ -41,7 +41,7 @@ async def test_summarize_stream_valid_input():
 @pytest.mark.asyncio
 async def test_summarize_stream_short_text():
     # Should bypass LLM and return stripped text
-    agent = SummaryAgent()
+    agent = SummaryService()
     input_text = "Short text."
     
     streamed_text = ""

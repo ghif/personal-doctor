@@ -24,7 +24,7 @@ def mock_ollama_chat():
             
     mock_chat_stream.side_effect = async_gen
 
-    with patch("src.agents.query_agent.litellm.acompletion", new=mock_chat_stream) as mock:
+    with patch("src.services.llm.chat.litellm.acompletion", new=mock_chat_stream) as mock:
         yield mock
 
 def test_query_endpoint_integration_streaming(mock_ollama_chat):
@@ -62,7 +62,7 @@ def test_query_endpoint_ollama_error():
     Tests that the endpoint handles errors from the ollama service gracefully.
     """
     mock_chat_stream = AsyncMock(side_effect=Exception("Ollama connection failed"))
-    with patch("src.agents.query_agent.litellm.acompletion", new=mock_chat_stream):
+    with patch("src.services.llm.chat.litellm.acompletion", new=mock_chat_stream):
         response = client.post("/query", json={"query_text": "test query", "input_modality": "TEXT"})
         assert response.status_code == 200
         assert "An error occurred while querying the model: Ollama connection failed" in response.text

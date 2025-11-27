@@ -1,6 +1,6 @@
 
 import pytest
-from src.services.tts_service import TTSService
+from src.services.audio.tts import TTSService
 
 @pytest.fixture(scope="module")
 def tts_service_instance():

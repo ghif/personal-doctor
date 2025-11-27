@@ -1,20 +1,20 @@
 import pytest
 from unittest.mock import MagicMock, patch, AsyncMock
-from src.agents.query_agent import QueryAgent
+from src.services.llm.chat import ChatService
 
 @pytest.fixture
 def mock_litellm_acompletion():
-    with patch("src.agents.query_agent.litellm.acompletion", new_callable=AsyncMock) as mock:
+    with patch("src.services.llm.chat.litellm.acompletion", new_callable=AsyncMock) as mock:
         yield mock
 
 @pytest.fixture
 def mock_agent_class():
-    with patch("src.agents.query_agent.Agent") as mock:
+    with patch("src.services.llm.chat.Agent") as mock:
         yield mock
 
 @pytest.fixture
 def mock_litellm_class():
-    with patch("src.agents.query_agent.LiteLlm") as mock:
+    with patch("src.services.llm.chat.LiteLlm") as mock:
         yield mock
 
 @pytest.mark.asyncio
@@ -30,7 +30,7 @@ async def test_process_query_text_only(mock_litellm_acompletion, mock_agent_clas
 
     mock_litellm_acompletion.side_effect = async_gen
     
-    agent = QueryAgent()
+    agent = ChatService()
     
     # Execute
     response = []
@@ -48,7 +48,7 @@ async def test_process_query_with_base64_image(mock_litellm_acompletion, mock_ag
     # Setup mock response
     mock_litellm_acompletion.return_value.__aiter__.return_value = []
     
-    agent = QueryAgent()
+    agent = ChatService()
     
     # Valid 1x1 pixel PNG base64
     valid_base64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mnk+A8AAQUBAScY42YAAAAASUVORK5CYII="
@@ -67,7 +67,7 @@ async def test_process_query_with_base64_image(mock_litellm_acompletion, mock_ag
 
 @pytest.mark.asyncio
 async def test_process_query_invalid_image(mock_litellm_acompletion, mock_agent_class, mock_litellm_class):
-    agent = QueryAgent()
+    agent = ChatService()
     
     # Execute
     response = []

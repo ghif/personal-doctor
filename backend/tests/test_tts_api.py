@@ -22,7 +22,7 @@ def mock_tts_service():
     mock_service.text_to_speech_stream.side_effect = mock_text_to_speech_stream
 
     # Patch the tts_service object in the api module where it is used
-    with patch("src.api.tts.tts_service", new=mock_service) as _mock:
+    with patch("src.api.routers.tts.tts_service", new=mock_service) as _mock:
         yield _mock
 
 def test_tts_endpoint_success(mock_tts_service):

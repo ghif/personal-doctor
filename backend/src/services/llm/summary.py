@@ -3,11 +3,11 @@ from google.adk.models.lite_llm import LiteLlm
 import logging
 import re
 import litellm
-from src.config import MODEL_NAME
+from src.core.config import MODEL_NAME
 
 logger = logging.getLogger(__name__)
 
-class SummaryAgent:
+class SummaryService:
     def __init__(self):
         # Configuration for the ADK Model
         # Assuming ADK supports generic providers or has an 'ollama' provider extension
@@ -18,7 +18,7 @@ class SummaryAgent:
 
     def initialize_agent(self):
         try:
-            logger.info("Initializing SummaryAgent")
+            logger.info("Initializing SummaryService")
             
             system_prompt = (
                 "You are an expert medical summarizer. "
@@ -31,13 +31,13 @@ class SummaryAgent:
             
             self.agent = Agent(
                 model=LiteLlm(model=f"ollama_chat/{MODEL_NAME}"),
-                name="medical_summary_agent",
+                name="medical_summary_service",
                 description="An agent that summarizes medical advice into concise paragraphs.",
                 instruction=system_prompt
             )
-            logger.info("SummaryAgent initialized successfully")
+            logger.info("SummaryService initialized successfully")
         except Exception as e:
-            logger.error(f"Failed to initialize SummaryAgent: {e}")
+            logger.error(f"Failed to initialize SummaryService: {e}")
             # We don't raise here to allow the app to start, but summarize will fail
             self.agent = None
 
@@ -53,7 +53,7 @@ class SummaryAgent:
             return self._strip_punctuation(text)
 
         if not self.agent:
-            logger.warning("SummaryAgent not initialized, returning clean original text")
+            logger.warning("SummaryService not initialized, returning clean original text")
             return self._strip_punctuation(text)
             
         try:

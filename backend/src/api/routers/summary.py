@@ -2,8 +2,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import logging
-from src.agents.summary_agent import SummaryAgent
-from src.services.tts_service import tts_service
+from src.services.llm.summary import SummaryService
+from src.services.audio.tts import tts_service
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -11,9 +11,8 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-# Initialize SummaryAgent
-# Ideally this should be a singleton or dependency
-summary_agent = SummaryAgent()
+# Initialize SummaryService
+summary_service = SummaryService()
 
 class TTSRequest(BaseModel):
     text: str
@@ -23,7 +22,7 @@ async def summary_tts_endpoint(request: TTSRequest):
     logger.info(f"Received Summary TTS request for text length: {len(request.text)}")
     try:
         # 1. Summarize
-        summary_text = await summary_agent.summarize(request.text)
+        summary_text = await summary_service.summarize(request.text)
         logger.info(f"Summarized text to: {summary_text}")
         
         # 2. TTS Stream
@@ -36,7 +35,7 @@ async def summary_tts_endpoint(request: TTSRequest):
 async def summary_stream_endpoint(request: TTSRequest):
     logger.info(f"Received Summary Stream request for text length: {len(request.text)}")
     try:
-        return StreamingResponse(summary_agent.summarize_stream(request.text), media_type="text/event-stream")
+        return StreamingResponse(summary_service.summarize_stream(request.text), media_type="text/event-stream")
     except Exception as e:
         logger.error(f"Error in Summary Stream endpoint: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
