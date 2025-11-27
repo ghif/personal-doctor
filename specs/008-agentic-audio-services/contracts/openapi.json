@@ -1,0 +1,9 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Agentic Audio API",
+    "version": "1.0.0",
+    "description": "Existing audio endpoints remain unchanged. No new external API endpoints are required for this internal refactor."
+  },
+  "paths": {}
+}

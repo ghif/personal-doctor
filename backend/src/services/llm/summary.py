@@ -23,10 +23,10 @@ class SummaryService:
             system_prompt = (
                 "You are an expert medical summarizer. "
                 "Your goal is to summarize the provided medical advice into a concise, single paragraph. "
-                "Do not lose critical safety information, but remove verbose explanations. "
-                "The output must contain spaces, numbers, dots, and commas as punctuation marks. "
-                "Remove question marks, exclamation marks, colons, and semicolons. "
-                "The output must be a continuous stream of words and numbers with appropriate spacing and allowed punctuation."
+                "Ensure the summary flows naturally when read aloud. "
+                "YOU MUST USE periods (.) and commas (,) to create natural pauses. "
+                "DO NOT use other punctuation marks like question marks (?), exclamation marks (!), colons (:), or semicolons (;). "
+                "Keep the summary focused on the key medical advice and safety instructions."
             )
             
             self.agent = Agent(
@@ -57,7 +57,7 @@ class SummaryService:
             return self._strip_punctuation(text)
             
         try:
-            prompt = f"Summarize the following text into a single paragraph without specific punctuation, retaining spaces, numbers, dots, and commas:\n\n{text}"
+            prompt = f"Summarize the following text into a single paragraph. Use periods and commas for pauses. Do not use other punctuation:\n\n{text}"
             response = await self.agent.run(prompt)
             # ADK response structure might vary, assuming .text or str(response) works
             summary = response.text if hasattr(response, 'text') else str(response)
@@ -88,13 +88,13 @@ class SummaryService:
             system_instruction = (
                 "You are an expert medical summarizer. "
                 "Your goal is to summarize the provided medical advice into a concise, single paragraph. "
-                "Do not lose critical safety information, but remove verbose explanations. "
-                "The output must contain spaces, numbers, dots, and commas as punctuation marks. "
-                "Remove question marks, exclamation marks, colons, and semicolons. "
-                "The output must be a continuous stream of words and numbers with appropriate spacing and allowed punctuation."
+                "Ensure the summary flows naturally when read aloud. "
+                "YOU MUST USE periods (.) and commas (,) to create natural pauses. "
+                "DO NOT use other punctuation marks like question marks (?), exclamation marks (!), colons (:), or semicolons (;). "
+                "Keep the summary focused on the key medical advice and safety instructions."
             )
             
-            prompt = f"Summarize the following text into a single paragraph without specific punctuation, retaining spaces, numbers, dots, and commas:\n\n{text}"
+            prompt = f"Summarize the following text into a single paragraph. Use periods and commas for pauses. Do not use other punctuation:\n\n{text}"
 
             messages = [
                 {"role": "system", "content": system_instruction},

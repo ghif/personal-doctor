@@ -28,19 +28,38 @@ class TTSService:
         logger.info(f"Available speakers: {self.tts.speakers}")
         logger.info(f"Available languages: {self.tts.languages}")
         try:
-            logger.info(f"Generating speech for text: {text}")
-            print(f"Generating speech for text: {text}")
             with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as fp:
-                self.tts.tts_to_file(text=text, file_path=fp.name)
-                logger.info(f"Speech generated and saved to temporary file: {fp.name}")
-                print(f"Temporary file created at: {fp.name}")
-                with open(fp.name, "rb") as f:
-                    yield from f
+                # Use the helper method to generate the file
+                # We close the temp file handle here so text_to_file can write to it by path if needed, 
+                # or pass the path. text_to_file takes a path.
+                pass 
+            
+            # The file exists at fp.name but is empty and closed.
+            self.text_to_file(text, fp.name)
+            
+            print(f"Temporary file created at: {fp.name}")
+            with open(fp.name, "rb") as f:
+                yield from f
+            
             os.remove(fp.name)
             logger.info("Temporary file removed.")
         except Exception as e:
-            logger.error(f"Error during TTS generation: {e}")
+            logger.error(f"Error during TTS stream generation: {e}")
+            if 'fp' in locals() and os.path.exists(fp.name):
+                 os.remove(fp.name)
             return
+
+    def text_to_file(self, text: str, file_path: str):
+        if not self.tts:
+            logger.error("TTS model is not available for file generation.")
+            raise RuntimeError("TTS model not loaded.")
+        try:
+            logger.info(f"Generating speech to file for text: {text}")
+            self.tts.tts_to_file(text=text, file_path=file_path)
+            logger.info(f"Speech generated and saved to {file_path}")
+        except Exception as e:
+            logger.error(f"Error during TTS file generation: {e}")
+            raise
 
 tts_service = TTSService()
 
