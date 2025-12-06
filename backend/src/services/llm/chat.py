@@ -8,12 +8,14 @@ import tempfile
 import binascii
 from PIL import Image, UnidentifiedImageError
 import io
+import os
 import litellm
 
 logger = logging.getLogger(__name__)
 
 class ChatService:
     def __init__(self):
+        os.environ['LITELLM_LOG'] = 'DEBUG'
         self.model_name = f"ollama_chat/{MODEL_NAME}"
         try:
             # We initialize the LiteLlm model.
@@ -61,60 +63,42 @@ class ChatService:
             # Handle image data
             if image_data:
                 try:
+                    raw_image_bytes = None
                     if os.path.exists(image_data):
-                        temp_image_path = image_data
+                        with open(image_data, "rb") as f:
+                            raw_image_bytes = f.read()
+                        temp_image_path = image_data # Retain original path if it was a file
                     else:
-                        # Base64 string
-                        image_bytes = base64.b64decode(image_data)
-                        Image.open(io.BytesIO(image_bytes)) # Verify image
+                        # Base64 string might have a prefix like "data:image/jpeg;base64,"
+                        if "," in image_data:
+                            image_data = image_data.split(',')[1]
                         
-                        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
-                            temp_file.write(image_bytes)
-                            temp_image_path = temp_file.name
-                    
-                    # Litellm/Ollama expects images in specific format.
-                    # For Ollama via Litellm, it often supports 'images' key in message or content list.
-                    # However, litellm standardizes on OpenAI format (image_url).
-                    # But for local ollama, passing the image path might be handled differently depending on litellm version.
-                    # A robust way for local Ollama via litellm is often just passing the raw dict expected by Ollama 
-                    # OR relying on litellm's translation.
-                    # Let's try the standard content list format with image_url (which can be a file URI or base64).
-                    
-                    # But wait, the previous code used `messages[0]['images'] = [path]`.
-                    # Litellm might not support local file paths in 'image_url' for all providers.
-                    # If we use LiteLlm, we are bound by its support.
-                    
-                    # Fallback/Alternative: Since the project was using `ollama` library directly, 
-                    # and now we use `litellm` (via ADK), we need to ensure it works.
-                    # If litellm delegates to ollama, it should handle it.
-                    # Constructing the message compatible with OpenAI vision format:
-                    
-                    # Encode image to base64 for safe transport via litellm if needed, 
-                    # or try passing the path if supported. 
-                    # Given we already have a path or base64, let's use base64 data URI if we can.
-                    
-                    # If temp_image_path was created from base64, we have the file. 
-                    # If it was a path, we have the path.
-                    
-                    # Let's read the file and encode to base64 for uniformity in litellm call
-                    # This avoids 'file://' issues if not supported.
-                    
-                    with open(temp_image_path, "rb") as image_file:
-                         base64_image = base64.b64encode(image_file.read()).decode('utf-8')
-                    
-                    messages[1]["content"].append({
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{base64_image}"
-                        }
-                    })
+                        raw_image_bytes = base64.b64decode(image_data)
 
-                except (binascii.Error, UnidentifiedImageError):
+                    # Encode image bytes to base64 for embedding in the message content
+                    base64_image_for_payload = base64.b64encode(raw_image_bytes).decode("utf-8")
+                    
+                    # For Ollama, the image is added to the content list
+                    messages[1]["content"] = [
+                        {"type": "text", "text": query_text},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": base64_image_for_payload
+                            }
+                        }
+                    ]
+
+                except (binascii.Error, UnidentifiedImageError) as e:
+                    logger.error(f"Error processing image: {e}. First 30 chars: {image_data[:30] if isinstance(image_data, str) else 'N/A'}")
                     yield "Error processing image: Invalid image data"
                     return
                 except Exception as e:
+                    logger.error(f"Error processing image: {e}")
                     yield f"Error processing image: {e}"
                     return
+            else:
+                messages[1]["content"] = [{"type": "text", "text": query_text}]
 
             # Execute streaming call
             # We use litellm.acompletion directly because Agent.run usually doesn't expose stream iterator easily

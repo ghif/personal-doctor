@@ -29,7 +29,7 @@ async def query(user_query: UserQuery):
 @router.post("/query/image")
 async def query_image(image: UploadFile = File(...), prompt: Optional[str] = Form(None)):
     # Validate file type
-    if image.content_type not in ["image/jpeg", "image/png"]:
+    if image.content_type not in ["image/jpeg", "image/png", "image/jpg"]:
         raise HTTPException(status_code=400, detail="Invalid image type. Only JPG and PNG are accepted.")
 
     # Validate file size (10 MB limit)
